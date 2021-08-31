@@ -1,0 +1,15 @@
+{
+  "short_name": "Zeero test App",
+  "name": "Zeero test App PWA",
+  "icons": [
+    {
+      "src": "./image/logo.png",
+      "sizes": "1024x1024",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
