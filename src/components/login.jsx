@@ -71,106 +71,108 @@ class login extends Component {
 
   render() {
     return (
-      <div className="main-container d-flex justify-content-center align-items-center">
-        <div className="d-flex justify-content-center w-100 button-box">
-          <button
-            className="login-button btn btn-primary"
-            onClick={this.handleModal}
+      <form>
+        <div className="main-container d-flex justify-content-center align-items-center">
+          <div className="d-flex justify-content-center w-100 button-box">
+            <button
+              className="login-button btn btn-primary"
+              onClick={this.handleModal}
+            >
+              login
+            </button>
+          </div>
+          <Modal
+            centered
+            size={"sm"}
+            backdrop="static"
+            show={this.state.show}
+            onHide={this.handleModal}
           >
-            login
-          </button>
-        </div>
-        <Modal
-          centered
-          size={"sm"}
-          backdrop="static"
-          show={this.state.show}
-          onHide={this.handleModal}
-        >
-          <Modal.Header className="row" closeButton>
-            <Modal.Title className="col">
-              <div className="title">ورود</div>
-            </Modal.Title>
-          </Modal.Header>
+            <Modal.Header className="row" closeButton>
+              <Modal.Title className="col">
+                <div className="title">ورود</div>
+              </Modal.Title>
+            </Modal.Header>
 
-          <Modal.Body>
-            <form>
-              <div className="form-group d-flex justify-content-center">
-                <div className="input-group d-flex justify-content-center">
-                  {!this.state.codeSent ? (
-                    <Fragment>
-                      <Form.Control
-                        id={"phone-input"}
-                        className="form-control shadow-none phone-input"
-                        type="number"
-                        value={this.state.phoneNumber}
-                        required
-                        isInvalid={this.state.invalidPhone}
-                        placeholder="09XXXXXXXXX"
-                        dir="ltr"
-                        onChange={this.handleChange}
-                      />
-                      <Form.Control.Feedback
-                        type="invalid"
-                        className={"ml-1 invalid-phone"}
-                      >
-                        شماره تلفن باید یازده رقم باشد
-                      </Form.Control.Feedback>
-                    </Fragment>
-                  ) : (
-                    <Fragment>
-                      <div dir="ltr">
-                        <ReactCodeInput
-                          onChange={(e) =>
-                            this.setState({ verificationCode: e })
-                          }
+            <Modal.Body>
+              <form>
+                <div className="form-group d-flex justify-content-center">
+                  <div className="input-group d-flex justify-content-center">
+                    {!this.state.codeSent ? (
+                      <Fragment>
+                        <Form.Control
+                          id={"phone-input"}
+                          className="form-control shadow-none phone-input"
                           type="number"
-                          fields={6}
-                          fieldWidth={40}
-                          fieldHeight={40}
+                          value={this.state.phoneNumber}
+                          required
+                          isInvalid={this.state.invalidPhone}
+                          placeholder="09XXXXXXXXX"
+                          dir="ltr"
+                          onChange={this.handleChange}
                         />
-                      </div>
-                    </Fragment>
-                  )}
+                        <Form.Control.Feedback
+                          type="invalid"
+                          className={"ml-1 invalid-phone"}
+                        >
+                          شماره تلفن باید یازده رقم باشد
+                        </Form.Control.Feedback>
+                      </Fragment>
+                    ) : (
+                      <Fragment>
+                        <div dir="ltr">
+                          <ReactCodeInput
+                            onChange={(e) =>
+                              this.setState({ verificationCode: e })
+                            }
+                            type="number"
+                            fields={6}
+                            fieldWidth={40}
+                            fieldHeight={40}
+                          />
+                        </div>
+                      </Fragment>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </form>
-          </Modal.Body>
-          <Modal.Footer className="d-flex justify-content-center">
-            {!this.state.codeSent ? (
-              <Fragment>
-                <button
-                  onClick={this.sendCode}
-                  className="btn btn-primary w-100 btn-text"
-                >
-                  درخواست کد
-                </button>
-                <p dir="rtl" className="login-text">
-                  پس از وارد کردن شماره موبایل یازده رقمی خود و لمس دکمه
-                  ‌"درخواست کد" پیامکی حاوی یک کد 6 رقمی برای شما ارسال می‌شود.
-                  با وارد کردن کد می‌توانید وارد حساب کاربری خود شوید.
-                </p>
-              </Fragment>
-            ) : (
-              <Fragment>
-                <button
-                  onClick={this.login}
-                  className="btn btn-primary w-100 btn-text"
-                >
-                  تایید و ورود
-                </button>
-                <p
-                  onClick={() => this.setState({ codeSent: false })}
-                  dir="rtl"
-                  className="login-text"
-                >
-                  (تغییر شماره یا درخواست کد جدید)
-                </p>
-              </Fragment>
-            )}
-          </Modal.Footer>
-        </Modal>
-      </div>
+              </form>
+            </Modal.Body>
+            <Modal.Footer className="d-flex justify-content-center">
+              {!this.state.codeSent ? (
+                <Fragment>
+                  <button
+                    onClick={this.sendCode}
+                    className="btn btn-primary w-100 btn-text"
+                  >
+                    درخواست کد
+                  </button>
+                  <p dir="rtl" className="login-text">
+                    پس از وارد کردن شماره موبایل یازده رقمی خود و لمس دکمه
+                    ‌"درخواست کد" پیامکی حاوی یک کد 6 رقمی برای شما ارسال
+                    می‌شود. با وارد کردن کد می‌توانید وارد حساب کاربری خود شوید.
+                  </p>
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <button
+                    onClick={this.login}
+                    className="btn btn-primary w-100 btn-text"
+                  >
+                    تایید و ورود
+                  </button>
+                  <p
+                    onClick={() => this.setState({ codeSent: false })}
+                    dir="rtl"
+                    className="login-text"
+                  >
+                    (تغییر شماره یا درخواست کد جدید)
+                  </p>
+                </Fragment>
+              )}
+            </Modal.Footer>
+          </Modal>
+        </div>
+      </form>
     );
   }
 }
