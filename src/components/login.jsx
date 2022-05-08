@@ -18,6 +18,10 @@ class login extends Component {
     };
   }
 
+  // componentDidUpdate(prevState, prevProp) {
+  //   if (prevState.codeSent !== this.state.codeSent) window.initCC(22);
+  // }
+
   handleModal = () => {
     this.setState({
       show: !this.state.show,
@@ -36,10 +40,12 @@ class login extends Component {
         codeSent: true,
       });
     else this.setState({ invalidPhone: true });
+    // window.initCC(22);
   };
 
   login = async () => {
     alert("Verified");
+
     if (this.state.verificationCode) {
       let FormData = require("form-data");
       let data = new FormData();
@@ -94,7 +100,7 @@ class login extends Component {
           </Modal.Header>
 
           <Modal.Body>
-            <form>
+            <form custome-attribute="include-form-tracking">
               <div className="form-group d-flex justify-content-center">
                 <div className="input-group d-flex justify-content-center">
                   {!this.state.codeSent ? (
@@ -121,6 +127,7 @@ class login extends Component {
                     <Fragment>
                       <div dir="ltr">
                         <ReactCodeInput
+                          custome-attribute="include-content-tracking"
                           onChange={(e) =>
                             this.setState({ verificationCode: e })
                           }
@@ -156,6 +163,7 @@ class login extends Component {
                 <button
                   onClick={this.login}
                   className="btn btn-primary w-100 btn-text"
+                  custom-attribute="form-submit"
                 >
                   تایید و ورود
                 </button>
