@@ -16,7 +16,6 @@ const Login = () => {
   const { trackPageView, trackEvent } = useMatomo();
   useEffect(() => {
     trackPageView();
-    // window.initCC();
   }, []);
 
   const handleModal = () => {

@@ -9,8 +9,8 @@ const instance = createInstance({
   // userId: "UID76903202", // optional, default value: `undefined`.
   trackerUrl:
     "https://ug9id0nvch.execute-api.ap-southeast-2.amazonaws.com/matomo.php", // optional, default value: `${urlBase}matomo.php`
-  srcUrl:
-    "https://github.com/abed-eb/PWA-Login-SignUp/blob/044a7c7cf489db6767049b9324fac5770d9424a1/src/cc-manual-1.3.js", // optional, default value: `${urlBase}matomo.js`
+  // srcUrl:
+  //   "https://github.com/abed-eb/PWA-Login-SignUp/blob/be68571c49975a228630ed96926b330204c7d978/src/cc-manual-1.3.js", // optional, default value: `${urlBase}matomo.js`
   // disabled: false, // optional, false by default. Makes all tracking calls no-ops if set to true.
   // heartBeat: {
   //   // optional, enabled by default
