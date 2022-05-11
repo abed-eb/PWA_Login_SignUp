@@ -4665,1096 +4665,825 @@ function piwikJs() {
 }
 
 function formAnalyticsJs() {
-  ////////////////////// start tracker.js
-
-  /*!!
-   * Copyright (C) InnoCraft Ltd - All rights reserved.
-   *
-   * All information contained herein is, and remains the property of InnoCraft Ltd.
-   *
-   * @link https://www.innocraft.com/
-   * @license For license details see https://www.innocraft.com/license
-   */
-  (function () {
-    var l = false;
-    var q = true;
-    var p = null;
-    var k = false;
-    var j = "FIELD_CHECKABLE";
-    var x = "FIELD_SELECTABLE";
-    var h = "FIELD_TEXT";
-    var n = ["password", "text", "url", "tel", "email", "search", "", null];
-    var a = [
-      "color",
-      "date",
-      "datetime",
-      "datetime-local",
-      "month",
-      "number",
-      "range",
-      "time",
-      "week",
-    ];
-    var b = ["radio", "checkbox"];
-    var o = ["button", "submit", "hidden", "reset"];
-    var t = 30000;
-    var y = [];
-    function e() {
-      if (l && "undefined" !== typeof console && console && console.debug) {
-        console.debug.apply(console, arguments);
-      }
-    }
-    var c = {
-      getAttribute: function (A, z) {
-        if (A && A.getAttribute && z) {
-          return A.getAttribute(z);
-        }
-        return null;
-      },
-      hasClass: function (A, z) {
-        if (!A || !A.className) {
-          return false;
-        }
-        return (" " + A.className + " ").indexOf(" " + z + " ") > -1;
-      },
-      hasNodeAttribute: function (A, z) {
-        if (A && A.hasAttribute) {
-          return A.hasAttribute(z);
-        }
-        if (A && A.attributes) {
-          var B = typeof A.attributes[z];
-          return B !== "undefined";
-        }
-        return false;
-      },
-      isIgnored: function (z) {
-        if (
-          !this.hasNodeAttribute(z, "include-form-tracking") &&
-          !this.getAttribute(z, "custom-attribute") === "include-form-tracking"
-        ) {
-          return true;
-        }
-        return false;
-      },
-      getTagName: function (z) {
-        if (z && z.tagName) {
-          return ("" + z.tagName).toLowerCase();
-        }
-        return null;
-      },
-      findAllFormElements: function (z) {
-        if (z && z.querySelectorAll) {
-          return z.querySelectorAll(
-            'form, [data-cc-form][custom-attribute="data-cc-form"]'
-          );
-        }
-        return [];
-      },
-      findAllFieldElements: function (z) {
-        if (z && z.querySelectorAll) {
-          return z.querySelectorAll("input,select,textarea,button,textarea");
-        }
-        return [];
-      },
-      findFormTrackerInstance: function (A, z) {
-        if ("undefined" === typeof z) {
-          z = 100;
-        }
-        if (z <= 0 || !A) {
-          return null;
-        }
-        if (A.formTrackerInstance) {
-          return A.formTrackerInstance;
-        }
-        if (A.parentNode) {
-          return this.findFormTrackerInstance(A.parentNode, --z);
-        }
-      },
-    };
-    var u = {
-      isArray: function (z) {
-        return (
-          typeof z === "object" && z !== null && typeof z.length === "number"
-        );
-      },
-      indexOfArray: function (B, A) {
-        if (!B) {
-          return -1;
-        }
-        if (B.indexOf) {
-          return B.indexOf(A);
-        }
-        if (!this.isArray(B)) {
-          return -1;
-        }
-        for (var z = 0; z < B.length; z++) {
-          if (B[z] === A) {
-            return z;
-          }
-        }
-        return -1;
-      },
-      getCurrentTime: function () {
-        return new Date().getTime();
-      },
-      isNumber: function (z) {
-        return !isNaN(z);
-      },
-      generateUniqueId: function () {
-        var C = "";
-        var A =
-          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        var B = A.length;
-        for (var z = 0; z < 6; z++) {
-          C += A.charAt(Math.floor(Math.random() * B));
-        }
-        return C;
-      },
-      paramsToQueryString: function (B) {
-        if (!B) {
-          B = {};
-        }
-        var A = "";
-        for (var z in B) {
-          if (Object.prototype.hasOwnProperty.call(B, z)) {
-            if (B[z] === null) {
-              continue;
-            }
-            A += z + "=" + encodeURIComponent(B[z]) + "&";
-          }
-        }
-        return A;
-      },
-    };
-    var g = {
-      getPiwikTrackers: function () {
-        if (null === p) {
-          if ("object" === typeof Piwik && Piwik.getAsyncTrackers) {
-            return Piwik.getAsyncTrackers();
-          }
-        }
-        if (u.isArray(p)) {
-          return p;
-        }
-        return [];
-      },
-      trackParams: function (E, D) {
-        if (!q) {
-          return;
-        }
-        var B = u.paramsToQueryString(E);
-        if (B) {
-          if (B.substr(-1) !== "&") {
-            B += "&";
-          }
-          B += "ca=1";
-        }
-        if (!B || B === "") {
-          return;
-        }
-        var z = this.getPiwikTrackers();
-        if (z && z.length) {
-          var A = 0,
-            C;
-          for (A; A < z.length; A++) {
-            C = z[A];
-            if (
-              D &&
-              500 === C.getLinkTrackingTimer() &&
-              C.setLinkTrackingTimer
-            ) {
-              C.setLinkTrackingTimer(650);
-            }
-            if (C && (!C.FormAnalytics || C.FormAnalytics.isEnabled())) {
-              C.queueRequest(B);
-            }
-          }
-        }
-        if (l) {
-          e("trackProgress: " + Piwik.JSON.stringify(E));
-        }
-      },
-    };
+  !(function () {
+    var t = !1,
+      e = !0,
+      i = null,
+      n = !1,
+      s = "FIELD_CHECKABLE",
+      r = "FIELD_SELECTABLE",
+      a = "FIELD_TEXT",
+      o = [
+        "color",
+        "date",
+        "datetime",
+        "datetime-local",
+        "month",
+        "number",
+        "range",
+        "time",
+        "week",
+      ],
+      u = ["radio", "checkbox"],
+      c = ["button", "submit", "hidden", "reset"],
+      h = 3e4,
+      d = [];
     function f() {
-      if (
-        typeof window === "object" &&
-        "function" === typeof window.piwikFormAnalyticsAsyncInit
-      ) {
-        window.piwikFormAnalyticsAsyncInit();
-      }
-      if (
-        typeof window === "object" &&
-        "function" === typeof window.matomoFormAnalyticsAsyncInit
-      ) {
-        window.matomoFormAnalyticsAsyncInit();
-      }
-      k = true;
+      t &&
+        "undefined" != typeof console &&
+        console &&
+        console.debug &&
+        console.debug.apply(console, arguments);
     }
-    function s(z) {
-      // z is a form
-      this.reset();
-      this.fields = [];
-      this.firstFieldEngagementDate = null;
-      this.lastFieldEngagementDate = null;
-      this.hesitationTimeTracked = false;
-      this.formStartTracked = false;
-      this.node = z;
-      this.formId = c.getAttribute(z, "id");
-      this.formName = c.getAttribute(z, "data-matomo-name");
-      if (!this.formName) {
-        this.formName = c.getAttribute(z, "data-piwik-name");
-      }
-      if (!this.formName) {
-        this.formName = c.getAttribute(z, "name");
-      }
-      this.entryFieldName = "";
-      this.exitFieldName = "";
-      this.lastFocusedFieldName = "";
-      this.fieldsWithUpdates = [];
-      this.fieldNodes = [];
-      this.initialFormViewLoggedWithTrackers = [];
-      this.trackingTimeout = null;
-      this.timeLastTrackingRequest = 0;
-      this.timeOffWindowBeforeEngagement = 0;
-      this.timeOffWindowSinceEngagement = 0;
-      this.mannualSubmitButton = z.querySelectorAll("form-submit");
-      Piwik.DOM.addEventListener(
-        window,
-        "focus",
-        (function (A) {
-          return function () {
-            if (!A.timeWindowBlur) {
-              return;
+    var l = {
+        getAttribute: function (t, e) {
+          return t && t.getAttribute && e ? t.getAttribute(e) : null;
+        },
+        hasClass: function (t, e) {
+          return (
+            !(!t || !t.className) &&
+            (" " + t.className + " ").indexOf(" " + e + " ") > -1
+          );
+        },
+        hasNodeAttribute: function (t, e) {
+          return t && t.hasAttribute
+            ? t.hasAttribute(e)
+            : !(!t || !t.attributes) && "undefined" !== typeof t.attributes[e];
+        },
+        isIgnored: function (t) {
+          return (
+            !this.hasNodeAttribute(t, "include-form-tracking") &&
+            "include-form-tracking" ===
+              !this.getAttribute(t, "custom-attribute")
+          );
+        },
+        getTagName: function (t) {
+          return t && t.tagName ? ("" + t.tagName).toLowerCase() : null;
+        },
+        findAllFormElements: function (t) {
+          return t && t.querySelectorAll
+            ? t.querySelectorAll(
+                'form, [data-cc-form][custom-attribute="data-cc-form"]'
+              )
+            : [];
+        },
+        findAllFieldElements: function (t) {
+          return t && t.querySelectorAll
+            ? t.querySelectorAll("input,select,textarea,button,textarea")
+            : [];
+        },
+        findFormTrackerInstance: function (t, e) {
+          return (
+            void 0 === e && (e = 100),
+            e <= 0 || !t
+              ? null
+              : t.formTrackerInstance
+              ? t.formTrackerInstance
+              : t.parentNode
+              ? this.findFormTrackerInstance(t.parentNode, --e)
+              : void 0
+          );
+        },
+      },
+      m = {
+        isArray: function (t) {
+          return (
+            "object" == typeof t && null !== t && "number" == typeof t.length
+          );
+        },
+        indexOfArray: function (t, e) {
+          if (!t) return -1;
+          if (t.indexOf) return t.indexOf(e);
+          if (!this.isArray(t)) return -1;
+          for (var i = 0; i < t.length; i++) if (t[i] === e) return i;
+          return -1;
+        },
+        getCurrentTime: function () {
+          return new Date().getTime();
+        },
+        isNumber: function (t) {
+          return !isNaN(t);
+        },
+        generateUniqueId: function () {
+          for (
+            var t = "",
+              e =
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+              i = e.length,
+              n = 0;
+            n < 6;
+            n++
+          )
+            t += e.charAt(Math.floor(Math.random() * i));
+          return t;
+        },
+        paramsToQueryString: function (t) {
+          t || (t = {});
+          var e = "";
+          for (var i in t)
+            if (Object.prototype.hasOwnProperty.call(t, i)) {
+              if (null === t[i]) continue;
+              e += i + "=" + encodeURIComponent(t[i]) + "&";
             }
-            var B = u.getCurrentTime() - A.timeWindowBlur;
-            A.timeWindowBlur = null;
-            if (B < 0) {
-              B = 0;
-            }
-            if (A.timeLastTrackingRequest) {
-              A.timeLastTrackingRequest = A.timeLastTrackingRequest + B;
-            }
-            if (A.firstFieldEngagementDate) {
-              A.timeOffWindowSinceEngagement += B;
-              e("time off engaged " + A.timeOffWindowSinceEngagement);
-            } else {
-              A.timeOffWindowBeforeEngagement += B;
-              e("time off not engaged " + A.timeOffWindowBeforeEngagement);
-            }
-          };
-        })(this)
-      );
-      Piwik.DOM.addEventListener(
-        window,
-        "blur",
-        (function (A) {
-          return function () {
-            A.timeWindowBlur = u.getCurrentTime();
-            e("window blur");
-          };
-        })(this)
-      );
-      Piwik.DOM.addEventListener(
-        z,
-        "submit",
-        (function (A) {
-          return function () {
-            e("form submit");
-            A.trackFormSubmit();
-          };
-        })(this)
-      );
-      Piwik.DOM.addEventListener(
-        this.mannualSubmitButton,
-        "click",
-        (function (A) {
-          return function () {
-            e("form submit");
-            A.trackFormSubmit();
-          };
-        })(this)
-      );
-    }
-    s.prototype.reset = function () {
-      this.detectionDate = u.getCurrentTime();
-      this.formViewId = u.generateUniqueId();
-      this.fieldsWithUpdates = [];
-      this.firstFieldEngagementDate = null;
-      this.lastFieldEngagementDate = null;
-      this.timeOffWindowSinceEngagement = 0;
-      this.timeOffWindowBeforeEngagement = 0;
-      this.formStartTracked = false;
-      if (this.fields && this.fields.length) {
-        for (var z = 0; z < this.fields.length; z++) {
-          this.fields[z].resetOnFormSubmit();
-        }
-      }
-    };
-    s.prototype.trackFormSubmit = function () {
-      this.setEngagedWithForm();
-      var z =
-        this.lastFieldEngagementDate -
-        this.firstFieldEngagementDate -
-        this.timeOffWindowSinceEngagement;
-      if (z < 0) {
-        z = 0;
-      }
-      var A = { fa_su: 1, fa_tts: z };
-      this.sendUpdate(this.fields, A, true);
-      this.reset();
-    };
-    s.prototype.trackFormConversion = function () {
-      if (!this.timeLastTrackingRequest) {
-        this.sendUpdate([], { fa_co: 1 });
-        return;
-      }
-      var z = (u.getCurrentTime() - this.timeLastTrackingRequest) / 1000;
-      if (z < 2) {
-        var A = this;
-        setTimeout(function () {
-          A.sendUpdate([], { fa_co: 1 });
-        }, 800);
-      } else {
-        this.sendUpdate([], { fa_co: 1 });
-      }
-    };
-    s.prototype.shouldBeTracked = function () {
-      return !!this.fields && !!this.fields.length;
-    };
-    s.prototype.trackInitialFormView = function () {
-      if (
-        !this.initialFormViewLoggedWithTrackers ||
-        !this.initialFormViewLoggedWithTrackers.length
-      ) {
-        this.initialFormViewLoggedWithTrackers = g.getPiwikTrackers();
-        this.sendUpdate([], { fa_fv: "1" });
-      }
-    };
-    s.prototype.setEngagedWithForm = function (z) {
-      this.lastFieldEngagementDate = u.getCurrentTime();
-      if (!this.firstFieldEngagementDate) {
-        this.firstFieldEngagementDate = this.lastFieldEngagementDate;
-      }
-    };
-    s.prototype.trackFieldUpdate = function (z) {
-      if (u.indexOfArray(this.fieldsWithUpdates, z) === -1) {
-        this.fieldsWithUpdates.push(z);
-      }
-      this.scheduleSendUpdate();
-    };
-    s.prototype.scheduleSendUpdate = function () {
-      if (this.trackingTimeout) {
-        clearTimeout(this.trackingTimeout);
-        this.trackingTimeout = null;
-      }
-      var z = this;
-      this.trackingTimeout = setTimeout(function () {
-        var A = z.fieldsWithUpdates;
-        z.fieldsWithUpdates = [];
-        z.sendUpdate(A);
-      }, t);
-    };
-    s.prototype.sendUpdate = function (C, F, E) {
-      if (!this.shouldBeTracked()) {
-        return;
-      }
-      if (this.trackingTimeout) {
-        clearTimeout(this.trackingTimeout);
-        this.trackingTimeout = null;
-      }
-      if (!C) {
-        C = [];
-      }
-      var z = [];
-      for (var B = 0; B < C.length; B++) {
-        z.push(C[B].getTrackingParams());
-      }
-      var D = {
-        fa_vid: this.formViewId,
-        fa_id: this.formId,
-        fa_name: this.formName,
-      };
-      if (this.entryFieldName) {
-        D.fa_ef = this.entryFieldName;
-      }
-      if (this.exitFieldName) {
-        D.fa_lf = this.exitFieldName;
-      }
-      if (z.length) {
-        D.fa_fields = Piwik.JSON.stringify(z);
-      }
-      if (this.firstFieldEngagementDate) {
-        if (!this.formStartTracked) {
-          D.fa_st = "1";
-          this.formStartTracked = true;
-        }
-        if (!this.hesitationTimeTracked) {
-          D.fa_ht =
-            this.firstFieldEngagementDate -
-            this.detectionDate -
-            this.timeOffWindowBeforeEngagement;
-          this.hesitationTimeTracked = true;
-        }
-        if (this.lastFieldEngagementDate && this.timeLastTrackingRequest) {
-          D.fa_ts = this.lastFieldEngagementDate - this.timeLastTrackingRequest;
-          if (D.fa_ts < 0) {
-            D.fa_ts = 0;
-          }
-        } else {
-          if (this.lastFieldEngagementDate && !this.timeLastTrackingRequest) {
-            D.fa_ts =
-              this.lastFieldEngagementDate -
-              this.firstFieldEngagementDate -
-              this.timeOffWindowSinceEngagement;
-            if (D.fa_ts < 0) {
-              D.fa_ts = 0;
-            }
-          }
-        }
-        this.timeLastTrackingRequest = u.getCurrentTime();
-      }
-      if (F) {
-        for (var A in F) {
-          if (Object.prototype.hasOwnProperty.call(F, A)) {
-            D[A] = F[A];
-          }
-        }
-      }
-      if ("undefined" === typeof E) {
-        E = false;
-      }
-      g.trackParams(D, E);
-    };
-    s.prototype.scanForFields = function () {
-      var C,
-        B = 0,
-        F,
-        E,
-        A;
-      E = c.findAllFieldElements(this.node);
-      for (C = 0; C < E.length; C++) {
-        if (!E[C]) {
-          continue;
-        }
-        if (this.fields && this.fields.length && this.fields.length > 2500) {
-          continue;
-        }
-        A = E[C];
-        if (u.indexOfArray(this.fieldNodes, A) > -1) {
-          continue;
-        }
-        var z = c.getTagName(A);
-        var D = c.getAttribute(A, "type");
-        if (u.indexOfArray(o, D) !== -1) {
-          continue;
-        } else {
-          if ("button" === z) {
-            continue;
-          }
-        }
-        if (z === "input" && !D) {
-          D = "text";
-        }
-        var G = c.getAttribute(A, "data-matomo-name");
-        if (!G) {
-          G = c.getAttribute(A, "data-piwik-name");
-          if (!G) {
-            G = c.getAttribute(A, "name");
-            if (!G) {
-              G = c.getAttribute(A, "id");
-              if (!G) {
-                continue;
-              }
-            }
-          }
-        }
-        this.fieldNodes.push(A);
-        var H = false;
-        for (B = 0; B < this.fields.length; B++) {
-          if (this.fields[B] && this.fields[B].fieldName === G) {
-            H = true;
-            this.fields[B].addNode(A);
-            break;
-          }
-        }
-        if (!H) {
-          F = new v(this, E[C], z, D, G);
-          this.addFormField(F);
-        }
-      }
-    };
-    s.prototype.addFormField = function (z) {
-      this.fields.push(z);
-    };
-    function v(D, C, B, A, E) {
-      this.discoveredDate = u.getCurrentTime();
-      this.tracker = D;
-      this.timespent = 0;
-      this.hesitationtime = 0;
-      this.nodes = [];
-      this.tagName = B;
-      this.fieldName = E;
-      this.fieldType = A;
-      this.startFocus = null;
-      this.timeLastChange = null;
-      this.numChanges = 0;
-      this.numFocus = 0;
-      this.numDeletes = 0;
-      this.numCursor = 0;
-      this.canCountChange = true;
-      this.isFocusedCausedAuto = c.hasNodeAttribute(C, "autofocus");
-      if (this.tagName === "select") {
-        this.category = x;
-      } else {
-        if (this.tagName === "textarea") {
-          this.category = h;
-        } else {
-          if (u.indexOfArray(b, this.fieldType) !== -1) {
-            this.category = j;
-          } else {
-            if (u.indexOfArray(a, this.fieldType) !== -1) {
-              this.category = x;
-            } else {
-              this.category = h;
-            }
-          }
-        }
-      }
-      this.addNode(C);
-      var z = C === document.activeElement;
-      if (z) {
-        this.onFocus();
-      }
-    }
-    v.prototype.addNode = function (A) {
-      this.nodes.push(A);
-      function z(D, B, F) {
-        if (
-          D &&
-          "object" === typeof tinymce &&
-          "function" === typeof tinymce.get &&
-          c.getTagName(D) === "textarea" &&
-          c.getAttribute(D, "id")
-        ) {
-          var E = c.getAttribute(D, "id");
-          var C = tinymce.get(E);
-          if (C) {
-            C.on(B, F);
-            return;
-          }
-        } else {
-          if (
-            D &&
-            "function" === typeof jQuery &&
-            c.getTagName(D) === "select" &&
-            c.hasClass(D, "select2-hidden-accessible") &&
-            D.nextSibling
-          ) {
-            if (B === "focus") {
-              B = "select2:open";
-            } else {
-              if (B === "blur") {
-                B = "select2:close";
-              }
-            }
-            jQuery(D).on(B, F);
-            return;
-          }
-        }
-        Piwik.DOM.addEventListener(D, B, F);
-      }
-      z(
-        A,
-        "focus",
-        (function (B) {
-          return function (C) {
-            if (B.isAutoFocus()) {
-              e("field autofocus " + B.fieldName);
-            } else {
-              e("field focus " + B.fieldName);
-            }
-            B.onFocus();
-          };
-        })(this)
-      );
-      z(
-        A,
-        "blur",
-        (function (B) {
-          return function () {
-            e("field blur " + B.fieldName);
-            B.onBlur();
-          };
-        })(this)
-      );
-      if (this.category === h) {
-        z(
-          A,
-          "keyup",
-          (function (B) {
-            return function (E) {
-              var D = E.which || E.keyCode;
-              var C = [9, 16, 17, 18, 20, 27, 91];
-              if ((D && u.indexOfArray(C, D) !== -1) || E.isCtrlKey) {
-                return;
-              }
-              if (D >= 37 && D <= 40) {
-                if (!B.isBlank()) {
-                  B.numCursor++;
-                  B.tracker.trackFieldUpdate(B);
-                }
-                return;
-              }
-              if (D == 8 || D == 46) {
-                if (!B.isBlank()) {
-                  B.numDeletes++;
-                  B.tracker.trackFieldUpdate(B);
-                }
-                return;
-              }
-              e("field text keyup " + B.fieldName);
-              B.onChange();
-            };
-          })(this)
-        );
-        z(
-          A,
-          "paste",
-          (function (B) {
-            return function () {
-              e("field text paste " + B.fieldName);
-              B.onChange();
-            };
-          })(this)
-        );
-      } else {
-        z(
-          A,
-          "change",
-          (function (B) {
-            return function () {
-              e("field change " + B.fieldName);
-              B.onChange();
-            };
-          })(this)
-        );
-      }
-    };
-    v.prototype.resetOnFormSubmit = function () {
-      this.hesitationtime = 0;
-      this.timespent = 0;
-      this.numFocus = 0;
-      this.numDeletes = 0;
-      this.numCursor = 0;
-      this.numChanges = 0;
-      this.startFocus = null;
-      this.timeLastChange = null;
-      this.canCountChange = true;
-      this.hasChangedValueSinceFocus = false;
-      this.isFocusedCausedAuto = false;
-    };
-    v.prototype.isAutoFocus = function () {
-      if (!this.isFocusedCausedAuto) {
-        return false;
-      }
-      if (
-        this.tracker.entryFieldName &&
-        this.tracker.entryFieldName !== this.fieldName
-      ) {
-        this.isFocusedCausedAuto = false;
-      }
-      if (
-        this.tracker.exitFieldName &&
-        this.tracker.exitFieldName !== this.fieldName
-      ) {
-        this.isFocusedCausedAuto = false;
-      }
-      return this.isFocusedCausedAuto;
-    };
-    v.prototype.getTrackingParams = function () {
-      var trackingParams = {
-        fa_fts: this.getTimeSpent(),
-        fa_fht: this.getHesitationTime(),
-        fa_fb: this.isBlank(),
-        fa_fn: this.fieldName,
-        fa_fch: this.numChanges,
-        fa_ff: this.numFocus,
-        fa_fd: this.numDeletes,
-        fa_fcu: this.numCursor,
-        fa_ft: this.fieldType || this.tagName,
-        fa_fs: this.getFieldSize(),
-      };
-      if (
-        this.nodes[0].hasAttribute("include-content-tracking") ||
-        this.nodes[0].getAttribute("custom-attribute") ===
-          "include-content-tracking"
-      ) {
-        trackingParams.fa_cn = this.getFieldContent();
-      }
-      return trackingParams;
-    };
-    v.prototype.isBlank = function () {
-      if (this.category === j) {
-        for (var z = 0; z < this.nodes.length; z++) {
-          if (this.nodes[z] && this.nodes[z].checked) {
-            return false;
-          }
-        }
-        return true;
-      }
-      if (!this.nodes[0]) {
-        return false;
-      }
-      var A = this.nodes[0];
-      if ("undefined" === typeof A.value) {
-        return true;
-      }
-      var B = A.value;
-      if (null === B || false === B || "" === B) {
-        return true;
-      }
-      return String(B).length === 0;
-    };
-    v.prototype.getFieldSize = function () {
-      if (this.category === h) {
-        if (this.nodes[0] && this.nodes[0].value) {
-          return String(this.nodes[0].value).length;
-        } else {
-          return 0;
-        }
-      } else {
-        return -1;
-      }
-    };
-    v.prototype.getFieldContent = function () {
-      if (this.category === h) {
-        if (this.nodes[0] && this.nodes[0].value) {
-          return String(this.nodes[0].value);
-        } else {
-          return "";
-        }
-      } else {
-        return "";
-      }
-    };
-    v.prototype.getTimeSpent = function () {
-      if (this.numChanges && !this.timeSpent) {
-        this.timeSpent = 1;
-      }
-      if (!this.startFocus || this.isAutoFocus()) {
-        return this.timespent;
-      }
-      if (this.timeLastChange) {
-        var z = this.timeLastChange - this.startFocus;
-        if (z < 0) {
-          z = 0;
-        }
-        return this.timespent + z;
-      }
-      return this.timespent + u.getCurrentTime() - this.startFocus;
-    };
-    v.prototype.getHesitationTime = function () {
-      if (this.numChanges || !this.startFocus || this.isAutoFocus()) {
-        return this.hesitationtime;
-      }
-      var z = u.getCurrentTime();
-      return this.hesitationtime + (z - this.startFocus);
-    };
-    v.prototype.onFocus = function () {
-      this.startFocus = u.getCurrentTime();
-      var z = this.fieldName !== this.tracker.lastFocusedFieldName;
-      if (z && this.tracker.lastFocusedFieldName) {
-        this.isFocusedCausedAuto = false;
-      }
-      this.timeLastChange = null;
-      this.hasChangedValueSinceFocus = false;
-      this.tracker.lastFocusedFieldName = this.fieldName;
-      if (z) {
-        this.canCountChange = true;
-      }
-      if (z && !this.isAutoFocus()) {
-        this.numFocus++;
-        this.tracker.setEngagedWithForm();
-        this.tracker.trackFieldUpdate(this);
-        this.tracker.exitFieldName = this.fieldName;
-        this.tracker.scheduleSendUpdate();
-      }
-    };
-    v.prototype.onBlur = function () {
-      if (!this.startFocus) {
-        return;
-      }
-      if (this.hasChangedValueSinceFocus) {
-        if (this.timeLastChange && this.startFocus) {
-          this.timespent += this.timeLastChange - this.startFocus;
-        }
-        this.timeLastChange = null;
-        this.startFocus = null;
-        return;
-      }
-      if (!this.isAutoFocus()) {
-        var z = u.getCurrentTime();
-        this.timespent += z - this.startFocus;
-        if (!this.numChanges) {
-          this.hesitationtime += z - this.startFocus;
-        }
-        this.tracker.setEngagedWithForm();
-        this.tracker.trackFieldUpdate(this);
-      }
-      this.startFocus = null;
-    };
-    v.prototype.onChange = function () {
-      this.timeLastChange = u.getCurrentTime();
-      if (this.isAutoFocus()) {
-        this.startFocus = this.timeLastChange;
-      } else {
-        if (!this.startFocus) {
-          return;
-        }
-      }
-      this.isFocusedCausedAuto = false;
-      this.hasChangedValueSinceFocus = true;
-      if (!this.numChanges) {
-        this.hesitationtime += this.timeLastChange - this.startFocus;
-      }
-      if (this.canCountChange) {
-        this.numChanges++;
-        this.canCountChange = false;
-      }
-      if (!this.tracker.entryFieldName) {
-        this.tracker.entryFieldName = this.fieldName;
-      }
-      this.tracker.setEngagedWithForm();
-      this.tracker.trackFieldUpdate(this);
-    };
-    function w(B, z) {
-      // B is a html form element
-      if (!q) {
-        return;
-      }
-      if (!document.querySelectorAll) {
-        return;
-      }
-      var A;
-      if (B && B.formTrackerInstance) {
-        A = B.formTrackerInstance;
-        A.scanForFields();
-      } else {
-        if (!c.isIgnored(B)) {
-          A = new s(B);
-          A.scanForFields();
-          y.push(A);
-          B.formTrackerInstance = A;
-        }
-      }
-      if (z && A && A.shouldBeTracked()) {
-        A.trackInitialFormView();
-      }
-      return A;
-    }
-    function d(B) {
-      if ("undefined" === typeof B) {
-        B = document;
-      }
-      var z = c.findAllFormElements(B);
-      for (var A = 0; A < z.length; A++) {
-        w(z[A], true);
-      }
-    }
-    function i() {
-      Piwik.DOM.onReady(function () {
-        var z = g.getPiwikTrackers();
-        if (!z || !u.isArray(z) || !z.length) {
-          return;
-        }
-        d(document);
-      });
-      Piwik.DOM.onLoad(function () {
-        var z = g.getPiwikTrackers();
-        if (!z || !u.isArray(z) || !z.length) {
-          return;
-        }
-        d(document);
-      });
-    }
-    function m(z) {
-      if ("undefined" !== typeof z.FormAnalytics) {
-        return;
-      }
-      z.FormAnalytics = {
-        enabled: true,
-        enable: function () {
-          this.enabled = true;
+          return e;
         },
-        disable: function () {
-          this.enabled = false;
+      },
+      g = {
+        getPiwikTrackers: function () {
+          return null === i &&
+            "object" == typeof Piwik &&
+            Piwik.getAsyncTrackers
+            ? Piwik.getAsyncTrackers()
+            : m.isArray(i)
+            ? i
+            : [];
         },
-        isEnabled: function () {
-          return q && this.enabled;
-        },
-      };
-    }
-    function r() {
-      if (
-        "object" === typeof window &&
-        "object" === typeof window.Piwik &&
-        "object" === typeof window.Piwik.FormAnalytics
-      ) {
-        return;
-      }
-      if ("object" === typeof window && !window.Piwik) {
-        return;
-      }
-      Piwik.FormAnalytics = {
-        element: c,
-        utils: u,
-        tracking: g,
-        FormField: v,
-        FormTracker: s,
-        disableFormAnalytics: function () {
-          q = false;
-        },
-        enableFormAnalytics: function () {
-          q = true;
-        },
-        isFormAnalyticsEnabled: function () {
-          return q;
-        },
-        setMatomoTrackers: function (z) {
-          this.setPiwikTrackers(z);
-        },
-        setPiwikTrackers: function (z) {
-          if (z === null) {
-            p = null;
-            return;
-          }
-          if (!u.isArray(z)) {
-            z = [z];
-          }
-          p = z;
-          if (k) {
-            i();
-          }
-        },
-        setTrackingTimer: function (z) {
-          if (z < 5) {
-            throw new Error("Delay needs to be at least five");
-          }
-          t = parseInt(z, 10);
-        },
-        enableDebugMode: function () {
-          l = true;
-        },
-        scanForForms: d,
-        trackFormSubmit: function (A) {
-          var z = c.findFormTrackerInstance(A);
-          if (z) {
-            z.trackFormSubmit();
-          }
-        },
-        trackFormConversion: function (z, B) {
-          if ("string" === typeof z || "string" === typeof B) {
-            g.trackParams({
-              fa_vid: u.generateUniqueId(),
-              fa_id: B,
-              fa_name: z,
-              fa_co: 1,
-            });
-            return;
-          }
-          var A = c.findFormTrackerInstance(z);
-          if (A) {
-            A.trackFormConversion();
-          }
-        },
-        trackForm: function (z) {
-          return w(z, true);
-        },
-      };
-      Piwik.addPlugin("FormAnalytics", {
-        log: function (E) {
-          if (!q || !E || !E.tracker) {
-            return "";
-          }
-          var B = E.tracker;
-          if (B.FormAnalytics && !B.FormAnalytics.isEnabled()) {
-            return "";
-          }
-          var z = c.findAllFormElements(document);
-          var D = "";
-          for (var A = 0; A < z.length; A++) {
-            var C = w(z[A], false);
+        trackParams: function (i, n) {
+          if (e) {
+            var s = m.paramsToQueryString(i);
             if (
-              C &&
-              C.shouldBeTracked() &&
-              u.indexOfArray(C.initialFormViewLoggedWithTrackers, B) === -1
+              (s && ("&" !== s.substr(-1) && (s += "&"), (s += "ca=1")),
+              s && "" !== s)
             ) {
-              C.initialFormViewLoggedWithTrackers.push(B);
-              if (C.formViewId !== null) {
-                D +=
-                  "&fa_fp[" +
-                  A +
-                  "][fa_vid]=" +
-                  encodeURIComponent(C.formViewId);
-              }
-              if (C.formId !== null) {
-                D += "&fa_fp[" + A + "][fa_id]=" + encodeURIComponent(C.formId);
-              }
-              if (C.formName !== null) {
-                D +=
-                  "&fa_fp[" +
-                  A +
-                  "][fa_name]=" +
-                  encodeURIComponent(C.formName);
-              }
-              D += "&fa_fp[" + A + "][fa_fv]=1";
-            }
-          }
-          if (D) {
-            e("sending request with pageview" + D);
-            return "&fa_pv=1" + D;
-          }
-          return "";
-        },
-        unload: function () {
-          var A;
-          for (var z = 0; z < y.length; z++) {
-            A = y[z];
-            if (A && A.trackingTimeout) {
-              e("before unload");
-              clearTimeout(A.trackingTimeout);
-              A.sendUpdate(A.fieldsWithUpdates, {}, true);
+              var r = this.getPiwikTrackers();
+              if (r && r.length)
+                for (var a, o = 0; o < r.length; o++)
+                  (a = r[o]),
+                    n &&
+                      500 === a.getLinkTrackingTimer() &&
+                      a.setLinkTrackingTimer &&
+                      a.setLinkTrackingTimer(650),
+                    !a ||
+                      (a.FormAnalytics && !a.FormAnalytics.isEnabled()) ||
+                      a.queueRequest(s);
+              t && f("trackProgress: " + Piwik.JSON.stringify(i));
             }
           }
         },
-      });
-      if (window.Piwik.initialized) {
-        Piwik.on("TrackerSetup", m);
-        Piwik.retryMissedPluginCalls();
-        f();
-        i();
-        Piwik.on("TrackerAdded", function () {
-          setTimeout(i, 700);
-        });
-      } else {
-        Piwik.on("TrackerSetup", m);
-        Piwik.on("MatomoInitialized", function () {
-          f();
-          i();
-          Piwik.on("TrackerAdded", function () {
-            setTimeout(i, 700);
-          });
-        });
-      }
+      };
+    function k() {
+      "object" == typeof window &&
+        "function" == typeof window.piwikFormAnalyticsAsyncInit &&
+        window.piwikFormAnalyticsAsyncInit(),
+        "object" == typeof window &&
+          "function" == typeof window.matomoFormAnalyticsAsyncInit &&
+          window.matomoFormAnalyticsAsyncInit(),
+        (n = !0);
     }
-    if ("object" === typeof window.Piwik) {
-      r();
-    } else {
-      if ("object" !== typeof window.matomoPluginAsyncInit) {
-        window.matomoPluginAsyncInit = [];
-      }
-      window.matomoPluginAsyncInit.push(r);
+    function F(t) {
+      var e;
+      this.reset(),
+        (this.fields = []),
+        (this.firstFieldEngagementDate = null),
+        (this.lastFieldEngagementDate = null),
+        (this.hesitationTimeTracked = !1),
+        (this.formStartTracked = !1),
+        (this.node = t),
+        (this.formId = l.getAttribute(t, "id")),
+        (this.formName = l.getAttribute(t, "data-matomo-name")),
+        this.formName || (this.formName = l.getAttribute(t, "data-piwik-name")),
+        this.formName || (this.formName = l.getAttribute(t, "name")),
+        (this.entryFieldName = ""),
+        (this.exitFieldName = ""),
+        (this.lastFocusedFieldName = ""),
+        (this.fieldsWithUpdates = []),
+        (this.fieldNodes = []),
+        (this.initialFormViewLoggedWithTrackers = []),
+        (this.trackingTimeout = null),
+        (this.timeLastTrackingRequest = 0),
+        (this.timeOffWindowBeforeEngagement = 0),
+        (this.timeOffWindowSinceEngagement = 0),
+        (this.mannualSubmitButton = t.querySelectorAll(
+          '[form-submit][custom-attribute="form-submit"]'
+        )),
+        Piwik.DOM.addEventListener(
+          window,
+          "focus",
+          ((e = this),
+          function () {
+            if (e.timeWindowBlur) {
+              var t = m.getCurrentTime() - e.timeWindowBlur;
+              (e.timeWindowBlur = null),
+                t < 0 && (t = 0),
+                e.timeLastTrackingRequest &&
+                  (e.timeLastTrackingRequest = e.timeLastTrackingRequest + t),
+                e.firstFieldEngagementDate
+                  ? ((e.timeOffWindowSinceEngagement += t),
+                    f("time off engaged " + e.timeOffWindowSinceEngagement))
+                  : ((e.timeOffWindowBeforeEngagement += t),
+                    f(
+                      "time off not engaged " + e.timeOffWindowBeforeEngagement
+                    ));
+            }
+          })
+        ),
+        Piwik.DOM.addEventListener(
+          window,
+          "blur",
+          (function (t) {
+            return function () {
+              (t.timeWindowBlur = m.getCurrentTime()), f("window blur");
+            };
+          })(this)
+        ),
+        Piwik.DOM.addEventListener(
+          t,
+          "submit",
+          (function (t) {
+            return function () {
+              f("form submit"), t.trackFormSubmit();
+            };
+          })(this)
+        ),
+        Piwik.DOM.addEventListener(
+          this.mannualSubmitButton,
+          "click",
+          (function (t) {
+            return function () {
+              f("form submit"), t.trackFormSubmit();
+            };
+          })(this)
+        );
     }
+    function p(t, e, i, n, c) {
+      (this.discoveredDate = m.getCurrentTime()),
+        (this.tracker = t),
+        (this.timespent = 0),
+        (this.hesitationtime = 0),
+        (this.nodes = []),
+        (this.tagName = i),
+        (this.fieldName = c),
+        (this.fieldType = n),
+        (this.startFocus = null),
+        (this.timeLastChange = null),
+        (this.numChanges = 0),
+        (this.numFocus = 0),
+        (this.numDeletes = 0),
+        (this.numCursor = 0),
+        (this.canCountChange = !0),
+        (this.isFocusedCausedAuto = l.hasNodeAttribute(e, "autofocus")),
+        "select" === this.tagName
+          ? (this.category = r)
+          : "textarea" === this.tagName
+          ? (this.category = a)
+          : -1 !== m.indexOfArray(u, this.fieldType)
+          ? (this.category = s)
+          : -1 !== m.indexOfArray(o, this.fieldType)
+          ? (this.category = r)
+          : (this.category = a),
+        this.addNode(e),
+        e === document.activeElement && this.onFocus();
+    }
+    function y(t, i) {
+      var n;
+      if (e && document.querySelectorAll)
+        return (
+          t && t.formTrackerInstance
+            ? (n = t.formTrackerInstance).scanForFields()
+            : l.isIgnored(t) ||
+              ((n = new F(t)).scanForFields(),
+              d.push(n),
+              (t.formTrackerInstance = n)),
+          i && n && n.shouldBeTracked() && n.trackInitialFormView(),
+          n
+        );
+    }
+    function w(t) {
+      void 0 === t && (t = document);
+      for (var e = l.findAllFormElements(t), i = 0; i < e.length; i++)
+        y(e[i], !0);
+    }
+    function T() {
+      Piwik.DOM.onReady(function () {
+        var t = g.getPiwikTrackers();
+        t && m.isArray(t) && t.length && w(document);
+      }),
+        Piwik.DOM.onLoad(function () {
+          var t = g.getPiwikTrackers();
+          t && m.isArray(t) && t.length && w(document);
+        });
+    }
+    function A(t) {
+      void 0 === t.FormAnalytics &&
+        (t.FormAnalytics = {
+          enabled: !0,
+          enable: function () {
+            this.enabled = !0;
+          },
+          disable: function () {
+            this.enabled = !1;
+          },
+          isEnabled: function () {
+            return e && this.enabled;
+          },
+        });
+    }
+    function b() {
+      ("object" == typeof window &&
+        "object" == typeof window.Piwik &&
+        "object" == typeof window.Piwik.FormAnalytics) ||
+        (("object" != typeof window || window.Piwik) &&
+          ((Piwik.FormAnalytics = {
+            element: l,
+            utils: m,
+            tracking: g,
+            FormField: p,
+            FormTracker: F,
+            disableFormAnalytics: function () {
+              e = !1;
+            },
+            enableFormAnalytics: function () {
+              e = !0;
+            },
+            isFormAnalyticsEnabled: function () {
+              return e;
+            },
+            setMatomoTrackers: function (t) {
+              this.setPiwikTrackers(t);
+            },
+            setPiwikTrackers: function (t) {
+              null !== t
+                ? (m.isArray(t) || (t = [t]), (i = t), n && T())
+                : (i = null);
+            },
+            setTrackingTimer: function (t) {
+              if (t < 5) throw new Error("Delay needs to be at least five");
+              h = parseInt(t, 10);
+            },
+            enableDebugMode: function () {
+              t = !0;
+            },
+            scanForForms: w,
+            trackFormSubmit: function (t) {
+              var e = l.findFormTrackerInstance(t);
+              e && e.trackFormSubmit();
+            },
+            trackFormConversion: function (t, e) {
+              if ("string" != typeof t && "string" != typeof e) {
+                var i = l.findFormTrackerInstance(t);
+                i && i.trackFormConversion();
+              } else
+                g.trackParams({
+                  fa_vid: m.generateUniqueId(),
+                  fa_id: e,
+                  fa_name: t,
+                  fa_co: 1,
+                });
+            },
+            trackForm: function (t) {
+              return y(t, !0);
+            },
+          }),
+          Piwik.addPlugin("FormAnalytics", {
+            log: function (t) {
+              if (!e || !t || !t.tracker) return "";
+              var i = t.tracker;
+              if (i.FormAnalytics && !i.FormAnalytics.isEnabled()) return "";
+              for (
+                var n = l.findAllFormElements(document), s = "", r = 0;
+                r < n.length;
+                r++
+              ) {
+                var a = y(n[r], !1);
+                a &&
+                  a.shouldBeTracked() &&
+                  -1 ===
+                    m.indexOfArray(a.initialFormViewLoggedWithTrackers, i) &&
+                  (a.initialFormViewLoggedWithTrackers.push(i),
+                  null !== a.formViewId &&
+                    (s +=
+                      "&fa_fp[" +
+                      r +
+                      "][fa_vid]=" +
+                      encodeURIComponent(a.formViewId)),
+                  null !== a.formId &&
+                    (s +=
+                      "&fa_fp[" +
+                      r +
+                      "][fa_id]=" +
+                      encodeURIComponent(a.formId)),
+                  null !== a.formName &&
+                    (s +=
+                      "&fa_fp[" +
+                      r +
+                      "][fa_name]=" +
+                      encodeURIComponent(a.formName)),
+                  (s += "&fa_fp[" + r + "][fa_fv]=1"));
+              }
+              return s
+                ? (f("sending request with pageview" + s), "&fa_pv=1" + s)
+                : "";
+            },
+            unload: function () {
+              for (var t, e = 0; e < d.length; e++)
+                (t = d[e]) &&
+                  t.trackingTimeout &&
+                  (f("before unload"),
+                  clearTimeout(t.trackingTimeout),
+                  t.sendUpdate(t.fieldsWithUpdates, {}, !0));
+            },
+          }),
+          window.Piwik.initialized
+            ? (Piwik.on("TrackerSetup", A),
+              Piwik.retryMissedPluginCalls(),
+              k(),
+              T(),
+              Piwik.on("TrackerAdded", function () {
+                setTimeout(T, 700);
+              }))
+            : (Piwik.on("TrackerSetup", A),
+              Piwik.on("MatomoInitialized", function () {
+                k(),
+                  T(),
+                  Piwik.on("TrackerAdded", function () {
+                    setTimeout(T, 700);
+                  });
+              }))));
+    }
+    (F.prototype.reset = function () {
+      if (
+        ((this.detectionDate = m.getCurrentTime()),
+        (this.formViewId = m.generateUniqueId()),
+        (this.fieldsWithUpdates = []),
+        (this.firstFieldEngagementDate = null),
+        (this.lastFieldEngagementDate = null),
+        (this.timeOffWindowSinceEngagement = 0),
+        (this.timeOffWindowBeforeEngagement = 0),
+        (this.formStartTracked = !1),
+        this.fields && this.fields.length)
+      )
+        for (var t = 0; t < this.fields.length; t++)
+          this.fields[t].resetOnFormSubmit();
+    }),
+      (F.prototype.trackFormSubmit = function () {
+        this.setEngagedWithForm();
+        var t =
+          this.lastFieldEngagementDate -
+          this.firstFieldEngagementDate -
+          this.timeOffWindowSinceEngagement;
+        t < 0 && (t = 0);
+        var e = { fa_su: 1, fa_tts: t };
+        this.sendUpdate(this.fields, e, !0), this.reset();
+      }),
+      (F.prototype.trackFormConversion = function () {
+        if (this.timeLastTrackingRequest)
+          if ((m.getCurrentTime() - this.timeLastTrackingRequest) / 1e3 < 2) {
+            var t = this;
+            setTimeout(function () {
+              t.sendUpdate([], { fa_co: 1 });
+            }, 800);
+          } else this.sendUpdate([], { fa_co: 1 });
+        else this.sendUpdate([], { fa_co: 1 });
+      }),
+      (F.prototype.shouldBeTracked = function () {
+        return !!this.fields && !!this.fields.length;
+      }),
+      (F.prototype.trackInitialFormView = function () {
+        (this.initialFormViewLoggedWithTrackers &&
+          this.initialFormViewLoggedWithTrackers.length) ||
+          ((this.initialFormViewLoggedWithTrackers = g.getPiwikTrackers()),
+          this.sendUpdate([], { fa_fv: "1" }));
+      }),
+      (F.prototype.setEngagedWithForm = function (t) {
+        (this.lastFieldEngagementDate = m.getCurrentTime()),
+          this.firstFieldEngagementDate ||
+            (this.firstFieldEngagementDate = this.lastFieldEngagementDate);
+      }),
+      (F.prototype.trackFieldUpdate = function (t) {
+        -1 === m.indexOfArray(this.fieldsWithUpdates, t) &&
+          this.fieldsWithUpdates.push(t),
+          this.scheduleSendUpdate();
+      }),
+      (F.prototype.scheduleSendUpdate = function () {
+        this.trackingTimeout &&
+          (clearTimeout(this.trackingTimeout), (this.trackingTimeout = null));
+        var t = this;
+        this.trackingTimeout = setTimeout(function () {
+          var e = t.fieldsWithUpdates;
+          (t.fieldsWithUpdates = []), t.sendUpdate(e);
+        }, h);
+      }),
+      (F.prototype.sendUpdate = function (t, e, i) {
+        if (this.shouldBeTracked()) {
+          this.trackingTimeout &&
+            (clearTimeout(this.trackingTimeout), (this.trackingTimeout = null)),
+            t || (t = []);
+          for (var n = [], s = 0; s < t.length; s++)
+            n.push(t[s].getTrackingParams());
+          var r = {
+            fa_vid: this.formViewId,
+            fa_id: this.formId,
+            fa_name: this.formName,
+          };
+          if (
+            (this.entryFieldName && (r.fa_ef = this.entryFieldName),
+            this.exitFieldName && (r.fa_lf = this.exitFieldName),
+            n.length && (r.fa_fields = Piwik.JSON.stringify(n)),
+            this.firstFieldEngagementDate &&
+              (this.formStartTracked ||
+                ((r.fa_st = "1"), (this.formStartTracked = !0)),
+              this.hesitationTimeTracked ||
+                ((r.fa_ht =
+                  this.firstFieldEngagementDate -
+                  this.detectionDate -
+                  this.timeOffWindowBeforeEngagement),
+                (this.hesitationTimeTracked = !0)),
+              this.lastFieldEngagementDate && this.timeLastTrackingRequest
+                ? ((r.fa_ts =
+                    this.lastFieldEngagementDate -
+                    this.timeLastTrackingRequest),
+                  r.fa_ts < 0 && (r.fa_ts = 0))
+                : this.lastFieldEngagementDate &&
+                  !this.timeLastTrackingRequest &&
+                  ((r.fa_ts =
+                    this.lastFieldEngagementDate -
+                    this.firstFieldEngagementDate -
+                    this.timeOffWindowSinceEngagement),
+                  r.fa_ts < 0 && (r.fa_ts = 0)),
+              (this.timeLastTrackingRequest = m.getCurrentTime())),
+            e)
+          )
+            for (var a in e)
+              Object.prototype.hasOwnProperty.call(e, a) && (r[a] = e[a]);
+          void 0 === i && (i = !1), g.trackParams(r, i);
+        }
+      }),
+      (F.prototype.scanForFields = function () {
+        var t,
+          e,
+          i,
+          n,
+          s = 0;
+        for (i = l.findAllFieldElements(this.node), t = 0; t < i.length; t++)
+          if (
+            i[t] &&
+            !(
+              (this.fields &&
+                this.fields.length &&
+                this.fields.length > 2500) ||
+              ((n = i[t]), m.indexOfArray(this.fieldNodes, n) > -1)
+            )
+          ) {
+            var r = l.getTagName(n),
+              a = l.getAttribute(n, "type");
+            if (-1 === m.indexOfArray(c, a) && "button" !== r) {
+              "input" !== r || a || (a = "text");
+              var o = l.getAttribute(n, "data-matomo-name");
+              if (
+                o ||
+                (o = l.getAttribute(n, "data-piwik-name")) ||
+                (o = l.getAttribute(n, "name")) ||
+                (o = l.getAttribute(n, "id"))
+              ) {
+                this.fieldNodes.push(n);
+                var u = !1;
+                for (s = 0; s < this.fields.length; s++)
+                  if (this.fields[s] && this.fields[s].fieldName === o) {
+                    (u = !0), this.fields[s].addNode(n);
+                    break;
+                  }
+                u || ((e = new p(this, i[t], r, a, o)), this.addFormField(e));
+              }
+            }
+          }
+      }),
+      (F.prototype.addFormField = function (t) {
+        this.fields.push(t);
+      }),
+      (p.prototype.addNode = function (t) {
+        function e(t, e, i) {
+          if (
+            t &&
+            "object" == typeof tinymce &&
+            "function" == typeof tinymce.get &&
+            "textarea" === l.getTagName(t) &&
+            l.getAttribute(t, "id")
+          ) {
+            var n = l.getAttribute(t, "id"),
+              s = tinymce.get(n);
+            if (s) return void s.on(e, i);
+          } else if (
+            t &&
+            "function" == typeof jQuery &&
+            "select" === l.getTagName(t) &&
+            l.hasClass(t, "select2-hidden-accessible") &&
+            t.nextSibling
+          )
+            return (
+              "focus" === e
+                ? (e = "select2:open")
+                : "blur" === e && (e = "select2:close"),
+              void jQuery(t).on(e, i)
+            );
+          Piwik.DOM.addEventListener(t, e, i);
+        }
+        var i;
+        this.nodes.push(t),
+          e(
+            t,
+            "focus",
+            ((i = this),
+            function (t) {
+              i.isAutoFocus()
+                ? f("field autofocus " + i.fieldName)
+                : f("field focus " + i.fieldName),
+                i.onFocus();
+            })
+          ),
+          e(
+            t,
+            "blur",
+            (function (t) {
+              return function () {
+                f("field blur " + t.fieldName), t.onBlur();
+              };
+            })(this)
+          ),
+          this.category === a
+            ? (e(
+                t,
+                "keyup",
+                (function (t) {
+                  return function (e) {
+                    var i = e.which || e.keyCode;
+                    (i &&
+                      -1 !== m.indexOfArray([9, 16, 17, 18, 20, 27, 91], i)) ||
+                      e.isCtrlKey ||
+                      (i >= 37 && i <= 40
+                        ? t.isBlank() ||
+                          (t.numCursor++, t.tracker.trackFieldUpdate(t))
+                        : 8 != i && 46 != i
+                        ? (f("field text keyup " + t.fieldName), t.onChange())
+                        : t.isBlank() ||
+                          (t.numDeletes++, t.tracker.trackFieldUpdate(t)));
+                  };
+                })(this)
+              ),
+              e(
+                t,
+                "paste",
+                (function (t) {
+                  return function () {
+                    f("field text paste " + t.fieldName), t.onChange();
+                  };
+                })(this)
+              ))
+            : e(
+                t,
+                "change",
+                (function (t) {
+                  return function () {
+                    f("field change " + t.fieldName), t.onChange();
+                  };
+                })(this)
+              );
+      }),
+      (p.prototype.resetOnFormSubmit = function () {
+        (this.hesitationtime = 0),
+          (this.timespent = 0),
+          (this.numFocus = 0),
+          (this.numDeletes = 0),
+          (this.numCursor = 0),
+          (this.numChanges = 0),
+          (this.startFocus = null),
+          (this.timeLastChange = null),
+          (this.canCountChange = !0),
+          (this.hasChangedValueSinceFocus = !1),
+          (this.isFocusedCausedAuto = !1);
+      }),
+      (p.prototype.isAutoFocus = function () {
+        return (
+          !!this.isFocusedCausedAuto &&
+          (this.tracker.entryFieldName &&
+            this.tracker.entryFieldName !== this.fieldName &&
+            (this.isFocusedCausedAuto = !1),
+          this.tracker.exitFieldName &&
+            this.tracker.exitFieldName !== this.fieldName &&
+            (this.isFocusedCausedAuto = !1),
+          this.isFocusedCausedAuto)
+        );
+      }),
+      (p.prototype.getTrackingParams = function () {
+        var t = {
+          fa_fts: this.getTimeSpent(),
+          fa_fht: this.getHesitationTime(),
+          fa_fb: this.isBlank(),
+          fa_fn: this.fieldName,
+          fa_fch: this.numChanges,
+          fa_ff: this.numFocus,
+          fa_fd: this.numDeletes,
+          fa_fcu: this.numCursor,
+          fa_ft: this.fieldType || this.tagName,
+          fa_fs: this.getFieldSize(),
+        };
+        return (
+          (this.nodes[0].hasAttribute("include-content-tracking") ||
+            "include-content-tracking" ===
+              this.nodes[0].getAttribute("custom-attribute")) &&
+            (t.fa_cn = this.getFieldContent()),
+          t
+        );
+      }),
+      (p.prototype.isBlank = function () {
+        if (this.category === s) {
+          for (var t = 0; t < this.nodes.length; t++)
+            if (this.nodes[t] && this.nodes[t].checked) return !1;
+          return !0;
+        }
+        if (!this.nodes[0]) return !1;
+        var e = this.nodes[0];
+        if (void 0 === e.value) return !0;
+        var i = e.value;
+        return null === i || !1 === i || "" === i || 0 === String(i).length;
+      }),
+      (p.prototype.getFieldSize = function () {
+        return this.category === a
+          ? this.nodes[0] && this.nodes[0].value
+            ? String(this.nodes[0].value).length
+            : 0
+          : -1;
+      }),
+      (p.prototype.getFieldContent = function () {
+        return this.category === a && this.nodes[0] && this.nodes[0].value
+          ? String(this.nodes[0].value)
+          : "";
+      }),
+      (p.prototype.getTimeSpent = function () {
+        if (
+          (this.numChanges && !this.timeSpent && (this.timeSpent = 1),
+          !this.startFocus || this.isAutoFocus())
+        )
+          return this.timespent;
+        if (this.timeLastChange) {
+          var t = this.timeLastChange - this.startFocus;
+          return t < 0 && (t = 0), this.timespent + t;
+        }
+        return this.timespent + m.getCurrentTime() - this.startFocus;
+      }),
+      (p.prototype.getHesitationTime = function () {
+        if (this.numChanges || !this.startFocus || this.isAutoFocus())
+          return this.hesitationtime;
+        var t = m.getCurrentTime();
+        return this.hesitationtime + (t - this.startFocus);
+      }),
+      (p.prototype.onFocus = function () {
+        this.startFocus = m.getCurrentTime();
+        var t = this.fieldName !== this.tracker.lastFocusedFieldName;
+        t &&
+          this.tracker.lastFocusedFieldName &&
+          (this.isFocusedCausedAuto = !1),
+          (this.timeLastChange = null),
+          (this.hasChangedValueSinceFocus = !1),
+          (this.tracker.lastFocusedFieldName = this.fieldName),
+          t && (this.canCountChange = !0),
+          t &&
+            !this.isAutoFocus() &&
+            (this.numFocus++,
+            this.tracker.setEngagedWithForm(),
+            this.tracker.trackFieldUpdate(this),
+            (this.tracker.exitFieldName = this.fieldName),
+            this.tracker.scheduleSendUpdate());
+      }),
+      (p.prototype.onBlur = function () {
+        if (this.startFocus) {
+          if (this.hasChangedValueSinceFocus)
+            return (
+              this.timeLastChange &&
+                this.startFocus &&
+                (this.timespent += this.timeLastChange - this.startFocus),
+              (this.timeLastChange = null),
+              void (this.startFocus = null)
+            );
+          if (!this.isAutoFocus()) {
+            var t = m.getCurrentTime();
+            (this.timespent += t - this.startFocus),
+              this.numChanges || (this.hesitationtime += t - this.startFocus),
+              this.tracker.setEngagedWithForm(),
+              this.tracker.trackFieldUpdate(this);
+          }
+          this.startFocus = null;
+        }
+      }),
+      (p.prototype.onChange = function () {
+        if (((this.timeLastChange = m.getCurrentTime()), this.isAutoFocus()))
+          this.startFocus = this.timeLastChange;
+        else if (!this.startFocus) return;
+        (this.isFocusedCausedAuto = !1),
+          (this.hasChangedValueSinceFocus = !0),
+          this.numChanges ||
+            (this.hesitationtime += this.timeLastChange - this.startFocus),
+          this.canCountChange &&
+            (this.numChanges++, (this.canCountChange = !1)),
+          this.tracker.entryFieldName ||
+            (this.tracker.entryFieldName = this.fieldName),
+          this.tracker.setEngagedWithForm(),
+          this.tracker.trackFieldUpdate(this);
+      }),
+      "object" == typeof window.Piwik
+        ? b()
+        : ("object" != typeof window.matomoPluginAsyncInit &&
+            (window.matomoPluginAsyncInit = []),
+          window.matomoPluginAsyncInit.push(b));
   })();
 
   /* END GENERATED: tracker.min.js */
@@ -5930,15 +5659,23 @@ function pushSubmit(event) {
   // console.log('submitting');
   //    event.preventDefault()
   var _paq = window._paq || [];
-  _paq.push([
-    "trackEvent",
-    "onSubmit",
-    "submitted",
-    "pageviewid : " + pageviewid,
-  ]);
+
+  for (let element of this.querySelectorAll(
+    "input[include-content-tracking]"
+  )) {
+    if (element.type !== "submit") {
+      _paq.push([
+        "trackEvent",
+        "onSubmit",
+        "submitted",
+        element.name + " : " + element.value,
+      ]);
+    }
+  }
 }
 
 var initCC = function (siteId) {
+  console.log("initCC started");
   import("https://openfpcdn.io/fingerprintjs/v3")
     .then((FingerprintJS) => FingerprintJS.load())
     .then((fp) => fp.get())
@@ -5965,11 +5702,4 @@ var initCC = function (siteId) {
     form.addEventListener("submit", pushSubmit);
   }
 };
-
-/*
-
-export const initCC = () =>{
-  ...
-}
-
-*/
+initCC(22);
