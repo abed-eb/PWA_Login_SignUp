@@ -5,7 +5,6 @@ import { Fragment } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ReactCodeInput from "react-verification-code-input";
 import axios from "axios";
-import { useMatomo } from "@datapunt/matomo-tracker-react";
 
 const Login = () => {
   const [show, setShow] = useState(false);
@@ -13,10 +12,7 @@ const Login = () => {
   const [invalidPhone, setInvalidPhone] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [verificationCode, setVerificationCode] = useState(null);
-  const { trackPageView, trackEvent } = useMatomo();
-  useEffect(() => {
-    trackPageView();
-  }, []);
+  useEffect(() => {}, []);
 
   const handleModal = () => {
     setShow(!show);
@@ -32,7 +28,6 @@ const Login = () => {
   };
 
   const login = async () => {
-    trackEvent({ category: "sample-page", action: "click-event" });
     alert("Verified");
 
     // if (verificationCode) {
