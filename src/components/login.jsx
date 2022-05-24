@@ -5,14 +5,16 @@ import { Fragment } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ReactCodeInput from "react-verification-code-input";
 import axios from "axios";
-
+import { initCC } from "matomo-form-tracker";
 const Login = () => {
   const [show, setShow] = useState(false);
   const [codeSent, setCodeSent] = useState(false);
   const [invalidPhone, setInvalidPhone] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [verificationCode, setVerificationCode] = useState(null);
-  useEffect(() => {}, []);
+  useEffect(() => {
+    initCC(22);
+  }, []);
 
   const handleModal = () => {
     setShow(!show);
