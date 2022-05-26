@@ -13,8 +13,8 @@ const Login = () => {
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [verificationCode, setVerificationCode] = useState(null);
   useEffect(() => {
-    initCC(22);
-  }, []);
+    if (show) initCC(22);
+  }, [show]);
 
   const handleModal = () => {
     setShow(!show);
