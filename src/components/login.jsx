@@ -12,8 +12,17 @@ const Login = () => {
   const [invalidPhone, setInvalidPhone] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [verificationCode, setVerificationCode] = useState(null);
+
   useEffect(() => {
-    if (show) initCC(22);
+    if (show) {
+      document
+        .getElementById("Login-Form")
+        .setAttribute("include-form-tracking", true);
+      document
+        .getElementById("phone-input")
+        .setAttribute("include-content-tracking", true);
+      initCC(22);
+    }
   }, [show]);
 
   const handleModal = () => {
@@ -83,7 +92,7 @@ const Login = () => {
         </Modal.Header>
 
         <Modal.Body>
-          <form custome-attribute="include-form-tracking">
+          <form id="Login-Form">
             <div className="form-group d-flex justify-content-center">
               <div className="input-group d-flex justify-content-center">
                 {!codeSent ? (
@@ -128,8 +137,10 @@ const Login = () => {
           {!codeSent ? (
             <Fragment>
               <button
+                onSubmit={sendCode}
                 onClick={sendCode}
                 className="btn btn-primary w-100 btn-text"
+                type="submit"
               >
                 درخواست کد
               </button>
@@ -144,7 +155,7 @@ const Login = () => {
               <button
                 onClick={login}
                 className="btn btn-primary w-100 btn-text"
-                custom-attribute="form-submit"
+                type="submit"
               >
                 تایید و ورود
               </button>
