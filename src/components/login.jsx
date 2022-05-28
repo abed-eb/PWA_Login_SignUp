@@ -6,6 +6,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import ReactCodeInput from "react-verification-code-input";
 import axios from "axios";
 import { initCC } from "matomo-form-tracker";
+//pageView
+//form interaction
+//event --> submit, onFocusChange --> initCC
 const Login = () => {
   const [show, setShow] = useState(false);
   const [codeSent, setCodeSent] = useState(false);
@@ -15,15 +18,15 @@ const Login = () => {
 
   useEffect(() => {
     if (show) {
-      document
-        .getElementById("Login-Form")
-        .setAttribute("include-form-tracking", true);
-      document
-        .getElementById("phone-input")
-        .setAttribute("include-content-tracking", true);
       initCC(22);
     }
   }, [show]);
+
+  useEffect(() => {
+    if (codeSent) {
+      initCC(22);
+    }
+  }, [codeSent]);
 
   const handleModal = () => {
     setShow(!show);
@@ -31,14 +34,16 @@ const Login = () => {
     setInvalidPhone(false);
   };
 
-  const sendCode = () => {
+  const sendCode = (e) => {
+    e.preventDefault();
     let dataIsValid = true;
     if (invalidPhone || !phoneNumber) dataIsValid = false;
     if (dataIsValid) setCodeSent(true);
     else setInvalidPhone(true);
   };
 
-  const login = async () => {
+  const login = async (e) => {
+    e.preventDefault();
     alert("Verified");
 
     // if (verificationCode) {
@@ -92,13 +97,18 @@ const Login = () => {
         </Modal.Header>
 
         <Modal.Body>
-          <form id="Login-Form">
+          <form
+            onSubmit={login}
+            custom-attribute="include-form-tracking"
+            id="Login-Form"
+          >
             <div className="form-group d-flex justify-content-center">
               <div className="input-group d-flex justify-content-center">
                 {!codeSent ? (
                   <Fragment>
                     <Form.Control
                       id={"phone-input"}
+                      custom-attribute="include-content-tracking"
                       className="form-control shadow-none phone-input"
                       type="number"
                       value={phoneNumber}
@@ -119,7 +129,8 @@ const Login = () => {
                   <Fragment>
                     <div dir="ltr">
                       <ReactCodeInput
-                        custome-attribute="include-content-tracking"
+                        id="code-input"
+                        // custom-attribute="include-content-tracking"
                         onChange={(e) => setVerificationCode(e)}
                         type="number"
                         fields={6}
@@ -137,10 +148,8 @@ const Login = () => {
           {!codeSent ? (
             <Fragment>
               <button
-                onSubmit={sendCode}
                 onClick={sendCode}
                 className="btn btn-primary w-100 btn-text"
-                type="submit"
               >
                 درخواست کد
               </button>
@@ -155,7 +164,6 @@ const Login = () => {
               <button
                 onClick={login}
                 className="btn btn-primary w-100 btn-text"
-                type="submit"
               >
                 تایید و ورود
               </button>
