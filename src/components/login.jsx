@@ -5,28 +5,12 @@ import { Fragment } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ReactCodeInput from "react-verification-code-input";
 import axios from "axios";
-import { initCC } from "matomo-form-tracker";
-//pageView
-//form interaction
-//event --> submit, onFocusChange --> initCC
 const Login = () => {
   const [show, setShow] = useState(false);
   const [codeSent, setCodeSent] = useState(false);
   const [invalidPhone, setInvalidPhone] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [verificationCode, setVerificationCode] = useState(null);
-
-  useEffect(() => {
-    if (show) {
-      initCC(22);
-    }
-  }, [show]);
-
-  useEffect(() => {
-    if (codeSent) {
-      initCC(22);
-    }
-  }, [codeSent]);
 
   const handleModal = () => {
     setShow(!show);
@@ -44,27 +28,26 @@ const Login = () => {
 
   const login = async (e) => {
     e.preventDefault();
-    alert("Verified");
 
-    // if (verificationCode) {
-    //   let FormData = require("form-data");
-    //   let data = new FormData();
-    //   let url = "http://127.0.0.1:8000/"; //sample url
-    //   data.append("verification_code", verificationCode);
-    //   data.append("phone", phoneNumber);
-    //   await axios
-    //     .post(url, data)
-    //     .then((res) => {
-    //       if (res.status === 200) {
-    //         console.log("user token : ", res.data.token);
-    //       } else {
-    //         console.log("unknown status");
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.log("Failur : ", error);
-    //     });
-    // }
+    if (verificationCode) {
+      let FormData = require("form-data");
+      let data = new FormData();
+      let url = "http://127.0.0.1:8000/"; //sample url
+      data.append("verification_code", verificationCode);
+      data.append("phone", phoneNumber);
+      await axios
+        .post(url, data)
+        .then((res) => {
+          if (res.status === 200) {
+            console.log("user token : ", res.data.token);
+          } else {
+            console.log("unknown status");
+          }
+        })
+        .catch((error) => {
+          console.log("Failur : ", error);
+        });
+    }
   };
 
   const handleChange = (e) => {
